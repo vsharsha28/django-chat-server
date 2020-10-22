@@ -13,27 +13,31 @@ from django_private_chat.models import *
 
 
 class DialogMethodTest(TestCase):
+    
+    def test_str_method(self):
+        self.assertEqual(str(self.dialog), "Chat with opuser")
 
     def setUp(self):
         self.dialog = Dialog()
-        self.dialog.owner = self.make_user(username="owuser")
+        
         self.dialog.opponent = self.make_user(username="opuser")
+        self.dialog.owner = self.make_user(username="owuser")
 
-    def test_str_method(self):
-        self.assertEqual(str(self.dialog), "Chat with opuser")
+
 
 
 class MessageMethodTest(TestCase):
 
     def setUp(self):
-        self.dialog = Dialog()
-        self.dialog.owner = self.make_user(username="owuser")
-        self.dialog.opponent = self.make_user(username="opuser")
-        self.dialog.save()
         self.message = Message()
         self.message.dialog = self.dialog
         self.message.sender = self.dialog.owner
         self.message.text = "text about something interesting"
+        self.dialog = Dialog()
+        self.dialog.owner = self.make_user(username="owuser")
+        self.dialog.opponent = self.make_user(username="opuser")
+        self.dialog.save()
+        
         self.message.save()
 
     def test_soft_delete(self):
